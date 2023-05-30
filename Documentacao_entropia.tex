@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{underscore}
+
+\begin{document}
+
+\title{Trabalho de entropia}
+\author{Raniery Monteiro de Oliveira}
+\date{28/05/2023}
+
+\maketitle
+
+\section{Fórmula da entropia}
+\hspace{0.5cm}Mensura o quão aleatório são os dados para serem analisados.\\
+
+\begin{align*}
+H &= -\sum p(x)(\log_2(p(x))) \\
+x &\in \text{classes}
+\end{align*}
+
+\section{Resolução com um exemplo prático}
+\hspace{0.5cm}No exemplo utilizado no código foi uma pesquisa de opinião sobre qual time você torce, sendo incluído um total de cinco times, sendo eles, São Paulo, Corinthians, Santos, Palmeiras e Grêmio. 4500 alegaram torcer para o São Paulo, 5000 para o Corinthians, 5500 para o Santos, 4000 para o Palmeiras e 3500 para o Grêmio, um total de 22500 participantes. \\
+
+Primeiro vou calcular a porcentagem de cada resultado:
+
+\[
+p(Sp) = \frac{4500}{22500} = 0.2
+\]
+\[
+p(Co) = \frac{5000}{22500} = 0.2222222222222222
+\]
+\[
+p(Sa) = \frac{5500}{22500} = 0.24444444444444444
+\]
+\[
+p(Pa) = \frac{4000}{22500} = 0.17777777777777778
+\]
+\[
+p(Gr) = \frac{3500}{22500} = 0.15555555555555556
+\]
+\[\newline\]
+\hspace{0.5cm}Agora calculamos os logs de de cada resultado acima e dividimos pelo log de base 2:
+
+\[
+ -(Log_2^\text{0.2} = \frac{Log_\text{0,2}}{Log_2} = -0.46438561897747244
+\]
+\[
+ Log_2^\text{0.2222222222222222} = \frac{Log_\text{0.2222222222222222}}{Log_2} = -0.9465911748535418
+\]
+\[
+ Log_2^\text{0.24444444444444444} = \frac{Log_\text{0.24444444444444444}}{Log_2} = -1.4434053138450118
+\]
+\[
+ Log_2^\text{0.17777777777777778} = \frac{Log_\text{0.17777777777777778}}{Log_2} = -1.8864014198591763
+\]
+\[
+ Log_2^\text{0.15555555555555556} = \frac{Log_\text{0.15555555555555556}}{Log_2} = -2.303990024745943)
+\]
+\[\newline\]
+\hspace{0.5cm}Por fim multiplicamos a porcentagem de cada caso com os resultados dos próprios no passo anterior:
+
+\[
+H = -(0.2(-0.46438561897747244) +
+\]
+\[
+0.2222222222222222(-0.9465911748535418) +
+\]
+\[
+0.24444444444444444(-1.4434053138450118) +
+\]
+\[
+0.17777777777777778(-1.8864014198591763) +
+\]
+\[
+0.15555555555555556(-2.303990024745943))
+\]
+\[\newline\]
+\hspace{0.5cm}Obtendo o seguinte resultado:
+\[
+H = 2.303990024745943
+\]
+\[\newline\]
+\hspace{0.5cm}Tendo como ciência o valor máximo da entropia permitida com 5 classes igual a 2.321928094887362. Podemos concluir que os dados apresentados possuem um grau alto de aleatoriedade, ou seja, os dados se distanciam da distribuição uniforme.
+
+\newpage
+\section{Resolução em Python}
+\hspace{0.5cm}import pandas\par
+from math import log \\ \par
+
+total_respostas = 0 \par
+H = 0\par
+porc_respostas = [] \\ \par
+
+arq = pandas.read_csv('pesquisa_opiniao_times.csv')\par
+classes = len(arq['time'])\\ \par
+
+for i in range(0, classes):\par
+    \hspace{1cm}total_respostas += arq['quantidade_respostas'][i]\\ \par
+
+for i in range(0, classes):\par
+    \hspace{1cm}x = arq['quantidade_respostas'][i]\par
+    \hspace{1cm}porc_respostas.append(x / total_respostas)\\ \par
+
+for i in range(0, classes):\par
+    \hspace{1cm}x = log(porc_respostas[i]) / log(2) \par
+    \hspace{1cm}H += porc_respostas[i] * x \par
+    \hspace{1cm}if i == 4:\par
+        \hspace{2cm}H *= -1\\ \par
+
+print(f"Resultado da entropia: {H}")\par
+print(f"A entropia máxima é igual a: {log(classes, 2)}")
+
+\subsection{Console}
+\hspace{0.5cm}Resultado da entropia: 2.303990024745943\par
+A entropia máxima é igual a: 2.321928094887362
+
+\end{document}
